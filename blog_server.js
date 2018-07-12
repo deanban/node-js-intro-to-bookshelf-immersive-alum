@@ -55,6 +55,20 @@ const listen = port => {
   });
 };
 
+app.get("/user/:id", (req, res) => {});
+
+app.get("/user/posts/:id", (req, res) => {});
+
+app.post("/user", (req, res) => {});
+
+app.get("/posts", (req, res) => {});
+
+app.get("/posts/:id", (req, res) => {});
+
+app.post("/posts", (req, res) => {});
+
+app.post("/comments", (req, res) => {});
+
 exports.up = justBackend => {
   return knex.migrate
     .latest([process.env.NODE_ENV])
