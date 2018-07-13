@@ -55,19 +55,41 @@ const listen = port => {
   });
 };
 
-app.get("/user/:id", (req, res) => {});
+app.get("/user/:id", async (req, res) => {
+  const user = await User.query()
+    .findById(req.params.id)
+    .eager("posts");
+  res.json(user);
+});
 
-app.get("/user/posts/:id", (req, res) => {});
+// app.get("/user/posts/:id", async (req, res) => {});
 
-app.post("/user", (req, res) => {});
+app.post("/user", async (req, res) => {
+  const newUser = req.body;
+  const user = await User.query()
+    .allowInsert("[name, username, email]")
+    .insert(newUser);
+});
 
-app.get("/posts", (req, res) => {});
+app.get("/posts", async (req, res) => {
+  const posts = await Posts.query().then(posts => res.json(posts));
+});
 
-app.get("/posts/:id", (req, res) => {});
+app.get("/posts/:id", async (req, res) => {
+  const post = await Posts.query()
+    .findById(req.params.id)
+    .eager("comments"); //fetch related comments
+  res.json(post);
+});
 
-app.post("/posts", (req, res) => {});
+app.post("/posts", async (req, res) => {
+  const newPost = req.body;
+  const post = await Posts.query().insert(newPost);
+});
 
-app.post("/comments", (req, res) => {});
+app.post("/comments", async (req, res) => {
+  // const post = await
+});
 
 exports.up = justBackend => {
   return knex.migrate
